@@ -1,104 +1,154 @@
-import PassePartout from "../common/passepartout.js";
-import { getRandomInt } from "../common/utils.js";
-import fpsWatcher from "../common/watcher.js";
-
-const canvas  = document.querySelector("canvas");
-const { width, height } = canvas;
-const context = canvas.getContext("2d", { alpha: false });
-const passepartout = new PassePartout(context);
+import { html, render, Component } from "/htm/preact/standalone.mjs";
+import Passepartout from "/common/js/passepartout.js";
+import { getRandomInt } from "/common/js/utils.js";
+import fpsWatcher from "/common/js/watcher.js";
+import colors, { polar_night_4 } from "/common/enums/colors.js"
 
 const RADIUS = 2;
 
-let isCircle = true;
+class Example extends Component {
+    constructor(props){
+        super(props);
 
-let cubes = [];
-const colors = [
-    "#BF6069",
-    "#A1BE89",
-    "#ECCB86",
-    "#7F9FC1",
-    "#B38CAD",
-    "#85BFD0"
-]
+        this.state = {
+            elements: [],
+            width: 0,
+            height: 0,
+            fps: 60,
+            isRenderingMethodCircle: true
+        };
 
-function updateValues() {
-    cubes = cubes.map(cube => {
-        if (cube.y >= height - RADIUS || cube.y <= 0) {
-            cube.vy = -cube.vy;
-        }
+        this.step = this.step.bind(this);
+        this.onFPSChange = this.onFPSChange.bind(this);
 
-        if (cube.x >= width - RADIUS || cube.x <= 0)  {
-            cube.vx = -cube.vx
-        }
-
-        cube.x += cube.vx;
-        cube.y += cube.vy;
-
-        return {
-            ...cube
-        }
-    })
-}
-
-function draw() {
-    context.clearRect(0,0, width, height);
-    context.fillStyle = "#323743";
-    context.fillRect(0,0, width, height);
-
-    context.beginPath();
-
-    if (isCircle) {
-        cubes.forEach(cube => passepartout.drawCircle(cube.x, cube.y, RADIUS, cube.color));
-    } else {
-        cubes.forEach(cube => passepartout.drawSquare(cube.x, cube.y, RADIUS, cube.color));
+        this.watcher = new fpsWatcher(this.onFPSChange);
     }
 
+    componentDidMount() {
+        const { width, height } = this.canvasRef;
+        this.canvasContext = this.canvasRef.getContext("2d", { alpha: false });
+        this.passepartout = new Passepartout(this.canvasContext);
 
-    context.closePath();
-}
-
-function step() {
-    fpsWatcher.start();
-
-    updateValues();
-    draw();
-
-    fpsWatcher.end();
-
-    window.requestAnimationFrame(step);
-}
-
-function addCube(numberOfCubesToAdd) {
-    let i = 0;
-
-    if (numberOfCubesToAdd === -1) {
-        cubes = [];
-        return;
+        this.setState({ width, height }, () => this.step());
     }
 
-    while(i < numberOfCubesToAdd) {
-        const color = window.colors[getRandomInt(0, 5)];
+    onClickAddElements(numberOfElementsToAdd) {
+        let i = 0;
+        const newElements = [];
 
-        cubes.push({
-            x: getRandomInt(RADIUS, width - RADIUS),
-            y: getRandomInt(RADIUS, height - RADIUS),
-            vx: getRandomInt(1, 10),
-            vy: getRandomInt(1, 10),
-            color: color
+        while(i < numberOfElementsToAdd) {
+            const color = colors[getRandomInt(0, 5)];
+
+            newElements.push({
+                x: getRandomInt(RADIUS, this.state.width - RADIUS),
+                y: getRandomInt(RADIUS, this.state.height - RADIUS),
+                vx: getRandomInt(1, 10),
+                vy: getRandomInt(1, 10),
+                color: color
+            });
+
+            ++i;
+        }
+
+        this.setState(prevState => ({
+            elements: [ ...prevState.elements, ...newElements ]
+        }));
+    }
+
+    onClickRemoveElements() {
+        this.setState({ elements: [] });
+    }
+
+    onChangeRenderMethod() {
+        this.setState(prevState => ({
+            isRenderingMethodCircle: !prevState.isRenderingMethodCircle
+        }));
+    }
+
+    onFPSChange(fps) {
+        this.setState({ fps });
+    }
+
+    updateValues() {
+        const updatedElements = this.state.elements.map(elem => {
+            if (elem.y >= this.state.height - RADIUS || elem.y <= 0) {
+                elem.vy = -elem.vy;
+            }
+
+            if (elem.x >= this.state.width - RADIUS || elem.x <= 0)  {
+                elem.vx = -elem.vx
+            }
+
+            elem.x += elem.vx;
+            elem.y += elem.vy;
+
+            return {
+                ...elem
+            }
         });
 
-        ++i;
+        this.setState({ elements: updatedElements });
     }
 
-    console.log(cubes.length);
+    draw() {
+        this.passepartout.clearCanvas(this.state.width, this.state.height, polar_night_4);
+
+        this.canvasContext.beginPath();
+
+        if (this.state.isRenderingMethodCircle) {
+            this.state.elements.forEach(elem => this.passepartout.drawCircle(elem.x, elem.y, RADIUS, elem.color));
+        } else {
+            this.state.elements.forEach(elem => this.passepartout.drawSquare(elem.x, elem.y, RADIUS, elem.color));
+        }
+
+        this.canvasContext.closePath();
+    }
+
+    step() {
+        this.watcher.begin();
+
+        this.updateValues();
+        this.draw();
+
+        this.watcher.end();
+
+        window.requestAnimationFrame(this.step);
+    }
+
+    renderChangeButtonText(isRenderingMethodCircle) {
+        return isRenderingMethodCircle ? "⚪" : "⬜";
+    }
+
+    render() {
+        return html`
+            <div class="container">
+                <h1>Shapes matters!</h1>
+                <canvas ref="${ref => this.canvasRef = ref }" width="800" height="600" />
+                <div class="statistics">
+                    <div class="statistics--item">
+                        <b>FPS:</b> <span>${this.state.fps}</span>
+                    </div>
+                    <div class="statistics--item">
+                        <b>Elements count:</b> <span>${this.state.elements.length}</span>
+                    </div>
+                </div>
+                <h2>Controls:</h2>
+                <div class="controls">
+                    <button onClick="${() => this.onClickAddElements(1)}">+1</button>
+                    <button onClick="${() => this.onClickAddElements(10)}">+10</button>
+                    <button onClick="${() => this.onClickAddElements(100)}">+100</button>
+                    <button onClick="${() => this.onClickAddElements(1000)}">+1000</button>
+                    <button class="button-emoji" onClick="${() => this.onChangeRenderMethod()}">${
+                        this.renderChangeButtonText(this.state.isRenderingMethodCircle)
+                    }</button>
+                    <button class="button-emoji" onClick="${() => this.onClickRemoveElements(-1)}">🗑️</button>
+                </div>
+            </div>
+        `;
+    }
 }
 
-function changeRenderMethod() {
-    isCircle = !isCircle;
-}
-
-step();
-
-window.addCube = addCube;
-window.colors = colors;
-window.changeRenderMethod = changeRenderMethod;
+render(html
+    `<${Example} />`,
+    document.getElementById("app")
+);

@@ -1,6 +1,15 @@
-export default class PassePartout {
+export default class Passepartout {
     constructor(context) {
         this.context = context;
+    }
+
+    clearCanvas(width, height, color) {
+        if (typeof color !== "string") {
+            this.context.clearRect(0,0, width, height);
+        } else {
+            this.context.fillStyle = color;
+            this.context.fillRect(0,0, width, height);
+        }
     }
 
     drawSquare(x, y, height = 10, color) {
