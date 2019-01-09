@@ -17,7 +17,7 @@ h1 {
     color: #A2BD8B;
 }
 
-canvas {
+.example--canvas {
     border: 1px dashed #FEFFFE;
 }
 

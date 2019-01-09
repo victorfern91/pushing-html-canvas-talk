@@ -1,7 +1,6 @@
-import { html, render, Component } from "/htm/preact/standalone.mjs";
+import { html, render, Component } from "/libs/htm/preact/standalone.mjs";
 import Passepartout from "/common/js/passepartout.js";
 import { getRandomInt } from "/common/js/utils.js";
-import fpsWatcher from "/common/js/watcher.js";
 import colors, { polar_night_4 } from "/common/enums/colors.js"
 
 const RADIUS = 2;
@@ -14,20 +13,18 @@ class Example extends Component {
             elements: [],
             width: 0,
             height: 0,
-            fps: 60,
             isRenderingMethodCircle: true
         };
 
         this.step = this.step.bind(this);
-        this.onFPSChange = this.onFPSChange.bind(this);
-
-        this.watcher = new fpsWatcher(this.onFPSChange);
     }
 
     componentDidMount() {
         const { width, height } = this.canvasRef;
         this.canvasContext = this.canvasRef.getContext("2d", { alpha: false });
         this.passepartout = new Passepartout(this.canvasContext);
+
+        this.stats = this.passepartout.startStats(this.canvasRef, this.canvasContainerRef);
 
         this.setState({ width, height }, () => this.step());
     }
@@ -63,10 +60,6 @@ class Example extends Component {
         this.setState(prevState => ({
             isRenderingMethodCircle: !prevState.isRenderingMethodCircle
         }));
-    }
-
-    onFPSChange(fps) {
-        this.setState({ fps });
     }
 
     updateValues() {
@@ -105,12 +98,12 @@ class Example extends Component {
     }
 
     step() {
-        this.watcher.begin();
+        this.stats.begin();
 
         this.updateValues();
         this.draw();
 
-        this.watcher.end();
+        this.stats.end();
 
         window.requestAnimationFrame(this.step);
     }
@@ -123,11 +116,10 @@ class Example extends Component {
         return html`
             <div class="container">
                 <h1>Shapes matters!</h1>
-                <canvas ref="${ref => this.canvasRef = ref }" width="800" height="600" />
+                <div classs="canvas--container" ref="${ref => this.canvasContainerRef = ref }">
+                    <canvas class="example--canvas" ref="${ref => this.canvasRef = ref }" width="800" height="600" />
+                </div>
                 <div class="statistics">
-                    <div class="statistics--item">
-                        <b>FPS:</b> <span>${this.state.fps}</span>
-                    </div>
                     <div class="statistics--item">
                         <b>Elements count:</b> <span>${this.state.elements.length}</span>
                     </div>
