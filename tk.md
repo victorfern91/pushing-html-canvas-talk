@@ -47,6 +47,7 @@ Medium:
     - speed up processing with datastrucures
     - falar do nosso caso [].includes() para Set.has()
 - multiple canvas for complex scenes
+- hidden canvas to detect mouse interactions
 
 Extreme
 - stop Animation Frame when you're no rendering anthing

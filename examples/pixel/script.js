@@ -16,7 +16,7 @@ class Example extends Component {
 
         this.canvasContext.beginPath();
 
-        this.passepartout.drawImage("./tuckersoft.png", 100, 100);
+        this.passepartout.drawImage("./unicorn.png", 300, 100.5);
 
         this.canvasContext.closePath();
     }
