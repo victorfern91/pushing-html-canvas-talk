@@ -1,3 +1,5 @@
+import Stats from "stats-js";
+
 const stats = new Stats();
 stats.showPanel(0);
 
@@ -32,7 +34,7 @@ export default class Passepartout {
         const image = new Image();
         image.onload = () => {
             this.context.drawImage(image, x, y);
-        }
+        };
         image.src = src;
     }
 

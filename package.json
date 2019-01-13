@@ -1,17 +1,41 @@
 {
-  "name": "pushhtmlcanvas",
+  "name": "push-html-canvas",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "webpack-dashboard -- webpack-dev-server"
   },
-  "author": "",
+  "author": "VIctor Fernandes",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4",
-    "expresss": "0.0.0",
-    "serve-index": "^1.9.1"
+    "events": "^3.0.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "stats-js": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "autoprefixer": "^9.4.2",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.20",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-hot-loader": "^1.4.3",
+    "css-loader": "^2.0.1",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
+    "error-overlay-webpack-plugin": "^0.1.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "postcss-loader": "^3.0.0",
+    "react-hot-loader": "^4.3.12",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dashboard": "^2.0.0",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-glob-entries": "^1.0.1",
+    "webpack-hot-middleware": "^2.24.3"
   }
 }

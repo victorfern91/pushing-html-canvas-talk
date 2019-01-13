@@ -29,12 +29,15 @@ Topicos:
 
     - A solução foi mesmmo puxar pela criatividade e conseguir puxar pelo canvas de forma a conseguir renderizar o  numero máximo de 20k nós no browser.
 
+    - De facto queremos mesmo ter mais de 20k nós? até que ponto vamos ter uma boa user experience com tantos nós?
+
 Easiers:
 
 - Are you using a zoom? conditional rendering
 - Shapes (Rect vs Circles)
 - batch canvas calls together
 - .map vs forEach vs for loops
+https://github.com/dg92/Performance-Analysis-JS
 - using `requestAnimationFrame` instead of `setInterval`
 - clearRect vs fillRect
 - memoize de funções que retornam a mesma coisa e que são muito dispendiosas.
