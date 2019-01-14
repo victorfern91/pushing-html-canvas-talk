@@ -1,10 +1,21 @@
 Olá a todos,
 
-Hoje vou falar-vos de algumas técnicas que eu utilizei para melhorar a performance de Rendering no canvas. Embora algumas das abordagens que foram todas estejam relacionadas com o problemas que tentei resolver num produto da feedzai, penso que a maioria dos problemas são coisas que podem ser utilizadas quando no nosso dia-a-dia temos que lidar com alguns problemas de performance.
+O meu nome é Victor Fernandes, tenho 27 anos, quase sempre tabalhei como front-end developer, porém também tenho bastante
+interesse na área de DevOps. Atualmente, trabalho como front-end na Feedzai onde estou a ajudar a desenvolver o Genome.
+O Genome é uma ferramenta de visualização de dados que recorre a link analysis e a grafos para ajudar a representar as
+diferentes conexões entre as diferentes entidades que estão presentes numa transação, facilitando assim a "vida" aos
+utilizadores que usam o nosso produto.
 
-Ok, sobre mim:
+Como podem imaginar, este produto tem uma grande a quantidade de dados para representar, e esta talk será um bocado
+centrada em algumas coisas que fui aprendendo ao longo do desenvolvimento deste produto. De forma a melhorar a performance
+da nossa implementação.
 
-O meu nome é Victor Fernandes, tenho 27 anos e atualmente trabalho como front-end developer na feedzai, e antes da feedzai trabalhei na MOG Technologies como Software Developer mas sempre fiz mais coisas releacionadas com **Front-end** e **Ops**.
+Eu dividi a apresentação em 2 tópicos:
+
+- Na primeira parte irei falar de diferentes formas de representar dados no browser e o que nos levou a optar pelo canvas.
+- Na segunda parte irei apresentar algumas tecnicas que podem melhorar a performance do canvas e tambem estas estão
+  classificadas pela dificuldade
+
 
 ---
 
@@ -34,7 +45,7 @@ Topicos:
 Easiers:
 
 - Are you using a zoom? conditional rendering
-- Shapes (Rect vs Circles)
+    - Shapes (Rect vs Circles)
 - batch canvas calls together
 - .map vs forEach vs for loops
 https://github.com/dg92/Performance-Analysis-JS
