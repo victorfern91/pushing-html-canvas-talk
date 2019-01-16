@@ -10,11 +10,12 @@ Como podem imaginar, este produto tem uma grande a quantidade de dados para repr
 centrada em algumas coisas que fui aprendendo ao longo do desenvolvimento deste produto. De forma a melhorar a performance
 da nossa implementação.
 
-Eu dividi a apresentação em 2 tópicos:
+Eu dividi a apresentação em 3 tópicos:
 
 - Na primeira parte irei falar de diferentes formas de representar dados no browser e o que nos levou a optar pelo canvas.
 - Na segunda parte irei apresentar algumas tecnicas que podem melhorar a performance do canvas e tambem estas estão
   classificadas pela dificuldade
+- Na ultima parte será para explicar como estamos a utilizar a junção destas partes todas num produto
 
 
 ---
@@ -29,6 +30,7 @@ Embora usar gráfos em vez das tradicionais tabelas de relação seja uma forma 
 
 ___
 
+renderizar apenas o que está visivel na janela do utilizador
 Topicos:
 
 - Porque não webGL?

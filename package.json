@@ -9,9 +9,11 @@
   "license": "ISC",
   "dependencies": {
     "events": "^3.0.0",
+    "faker": "^4.1.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "stats-js": "^1.0.0"
+    "stats-js": "^1.0.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
