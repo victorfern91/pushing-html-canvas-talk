@@ -6,14 +6,15 @@ import colors from "common/enums/colors";
 import faker from "faker";
 import uuidv4 from "uuid/v4"
 
-const RADIUS = 4;
+const RADIUS = 1;
 
 class HitboxExample extends Component {
     state = {
         elements: [],
         width: 0,
         height: 0,
-        drawTime: 0,
+        detectionTime: 0,
+        maxDetectionTime: 0
     };
 
     componentDidMount() {
@@ -26,12 +27,51 @@ class HitboxExample extends Component {
         this.updateValues();
     }
 
+    onMouseMove = (evt) => {
+        const x = evt.clientX - evt.currentTarget.offsetLeft;
+        const y = evt.clientY - evt.currentTarget.offsetTop;
+        this.findPersonAtPosition(x,y);
+    };
+
+    findPersonAtPosition(x, y) {
+        const t0 = window.performance.now();
+
+        for (let i = 0, length = this.state.elements.length; i < length; ++i) {
+            if (Math.sqrt((x - this.state.elements[i].x) ** 2 + (y - this.state.elements[i].y) ** 2) < RADIUS) {
+                const t1 = window.performance.now();
+                const detectionTime = Math.ceil(t1 - t0);
+
+                this.setState((prevState) => ({
+                    detectionTime,
+                    maxDetectionTime: Math.max(detectionTime, prevState.maxDetectionTime)
+                }));
+
+                return this.state.elements[i];
+            }
+        }
+
+        // Uncomment this in order to show how it's possible response time by using for-loops
+        /*this.state.elements.forEach(element => {
+            if (Math.sqrt((x - element.x) ** 2 + (y - element.y) ** 2) < RADIUS) {
+                const t1 = window.performance.now();
+                const detectionTime = Math.ceil(t1 - t0);
+
+                this.setState((prevState) => ({
+                    detectionTime,
+                    maxDetectionTime: Math.max(detectionTime, prevState.maxDetectionTime)
+                }));
+
+                return element;
+            }
+        });*/
+    }
+
     updateValues() {
         const elements = [];
 
-        for (let i = 0; i < 120000; ++i) {
-            const column = (i%200);
-            const line = Math.floor(i/200);
+        for (let i = 0; i < 480000; ++i) {
+            const column = (i%800);
+            const line = Math.floor(i/800);
 
             elements.push({
                 id: uuidv4(),
@@ -57,27 +97,19 @@ class HitboxExample extends Component {
         return (
             <div className="container">
                 <h1>Catch me, if you can!</h1>
-                <div className="canvas--container" ref={ref => this.canvasContainerRef = ref }>
-                    <canvas className="example--canvas" ref={ref => this.canvasRef = ref } width="800" height="600" />
-                </div>
+                <canvas onMouseMove={this.onMouseMove} className="example--canvas" ref={ref => this.canvasRef = ref } width="800" height="600" />
                 <div className="statistics">
                     <div className="statistics--item">
                         <b>Elements count:</b> <span>{this.state.elements.length}</span>
                     </div>
-                </div>
-                <div className="statistics">
                     <div className="statistics--item">
-                        <code>drawTime:</code> <span>{Math.ceil(this.state.drawTime)}</span>
+                        <code>Detecting box time:</code> <span>{this.state.detectionTime}</span>
+                    </div>
+                    <div className="statistics--item">
+                        <code>[Max] Detecting box time:</code> <span>{this.state.maxDetectionTime}</span>
                     </div>
                 </div>
                 <h2>Controls:</h2>
-                <div className="controls">
-                    <button onClick={() => this.onClickAddElements(1)}>+1</button>
-                    <button onClick={() => this.onClickAddElements(10)}>+10</button>
-                    <button onClick={() => this.onClickAddElements(100)}>+100</button>
-                    <button onClick={() => this.onClickAddElements(1000)}>+1000</button>
-                    <button className="button-emoji" onClick={() => this.onClickRemoveElements(-1)}>🗑️</button>
-                </div>
             </div>
         );
     }

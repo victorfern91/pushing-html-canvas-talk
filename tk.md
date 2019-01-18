@@ -49,21 +49,23 @@ Easiers:
 - Are you using a zoom? conditional rendering
     - Shapes (Rect vs Circles)
 - batch canvas calls together
-- .map vs forEach vs for loops
 https://github.com/dg92/Performance-Analysis-JS
 - using `requestAnimationFrame` instead of `setInterval`
-- clearRect vs fillRect
+- `clearRect` vs `fillRect`
 - memoize de funções que retornam a mesma coisa e que são muito dispendiosas.
+- Retina display resolution CSS hack (scaling canvas using css)
 
 Medium:
 - avoiding floating-points
 - avoid text rendering
-- Retina display resolution CSS hack (scaling canvas using css)
-- speed up canvas interactions
-    - speed up processing with datastrucures
-    - falar do nosso caso [].includes() para Set.has()
 - multiple canvas for complex scenes
-- hidden canvas to detect mouse interactions
+    - apenas  fazer update do layer de nodes quando há iterações sobre o  mesmo
+-  How to interact with canvas? (slide)
+   - .map vs forEach vs for loops
+   - speed up canvas interactions
+       - speed up processing with datastrucures
+       - falar do nosso caso [].includes() para Set.has()
+   - hidden canvas to detect mouse interactions
 
 Extreme
 - stop Animation Frame when you're no rendering anthing
