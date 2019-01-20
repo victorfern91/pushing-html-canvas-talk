@@ -13,7 +13,7 @@ html, body {
     font-family: "Lucida Console", Monaco, monospace;
 }
 
-h1 {
+h1, h3 {
     color: #A2BD8B;
 }
 
@@ -66,4 +66,15 @@ button {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 30px;
+    border: 3px solid white;
+}
+
+.bar {
+    height: inherit;
+    background-color: #A2BD8B;
 }

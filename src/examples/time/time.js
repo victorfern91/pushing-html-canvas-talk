@@ -1,65 +1,79 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { render } from "react-dom";
 
 class Time extends PureComponent  {
     state = {
         setIntervalCounter: 0,
         requestAnimationFrameCounter: 0,
+        setIntervalCounterTime: "loading...",
+        requestAnimationFrameCounterTime: "loading...",
         t0: performance.now(),
-        setIntervalFps: 60,
-        requestAnimationFrameFps: 60
     };
 
     componentDidMount() {
-        requestAnimationFrame(this.loop);
-        requestAnimationFrame(this.checkFps);
-
-        setInterval(() => {
+        this.timer = setInterval(() => {
+            this.delay();
             this.setState((prevState)  => {
                 const counter = prevState.setIntervalCounter + 1;
+
+                if (counter >= 300)  {
+                    clearInterval(this.timer);
+
+                    return {
+                        setIntervalCounter: counter,
+                        setIntervalCounterTime: Math.ceil(performance.now() - prevState.t0)
+                    };
+                }
 
                 return {
                     setIntervalCounter: counter
                 };
             });
-        }, 16);
+        }, 16.67);
+
+        requestAnimationFrame(this.loop);
     }
 
     loop = () => {
-        this.setState((prevState)  => {
-            const counter = prevState.setIntervalCounter + 1;
+        this.delay();
+        this.loopRequest = requestAnimationFrame(this.loop);
+
+        this.setState((prevState) => {
+            const counter = prevState.requestAnimationFrameCounter + 1;
+
+            if (counter >= 300)  {
+                cancelAnimationFrame(this.loopRequest);
+
+                return {
+                    requestAnimationFrameCounter: counter,
+                    requestAnimationFrameCounterTime: Math.ceil(performance.now() - prevState.t0)
+                };
+            }
 
             return {
                 requestAnimationFrameCounter: counter
             };
         });
-
-        requestAnimationFrame(this.loop);
-
     }
 
-    checkFps = () => {
-        const t1 = performance.now();
-
-        if (t1 - this.state.t0 >= 1000) {
-            console.log("here");
-            this.setState((prevState) => ({
-                setIntervalCounter: 0,
-                requestAnimationFrameCounter: 0,
-                t0: t1,
-                setIntervalFps: prevState.setIntervalCounter,
-                requestAnimationFrameFps: prevState.requestAnimationFrameCounter
-            }));
+    delay() {
+        const initialTime = performance.now();
+        while(performance.now() - initialTime < 10) {
+            //delay
         }
-
-        requestAnimationFrame(this.checkFps);
     }
 
     render() {
         return (
             <div>
-                <h1>setInterval: {this.state.setIntervalFps}</h1>
-                <h1>requestAnimationFrame: {this.state.requestAnimationFrameFps}</h1>
+                <h3>Time to complete setInterval: {this.state.setIntervalCounterTime} ms</h3>
+                <div className="progress-bar">
+                    <div className="bar" style={{ width: `${this.state.setIntervalCounter}px` }} />
+                </div>
+                <h3>Time to complete requestAnimationFrame: {this.state.requestAnimationFrameCounterTime} ms</h3>
+                <div className="progress-bar">
+                    <div className="bar" style={{ width: `${this.state.requestAnimationFrameCounter}px` }} />
+                </div>
             </div>
         );
     }
