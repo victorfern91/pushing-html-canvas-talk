@@ -78,3 +78,7 @@ button {
     height: inherit;
     background-color: #A2BD8B;
 }
+
+.time-container {
+    margin-top: 8rem;
+}

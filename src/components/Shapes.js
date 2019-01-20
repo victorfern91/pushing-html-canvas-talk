@@ -10,8 +10,7 @@ class ShapesExample extends Component {
     state = {
         elements: [],
         width: 0,
-        height: 0,
-        drawTime: 0,
+        height: 0
     };
 
     constructor(props){
@@ -79,8 +78,6 @@ class ShapesExample extends Component {
     }
 
     draw() {
-        const t0 = window.performance.now();
-
         this.passepartout.clearCanvas(this.state.width, this.state.height, polar_night_4);
 
         this.canvasContext.beginPath();
@@ -89,12 +86,7 @@ class ShapesExample extends Component {
             this.passepartout.drawCircle(element.x, element.y, RADIUS, element.color)
         );
 
-
         this.canvasContext.closePath();
-
-        const t1 = window.performance.now();
-
-        this.setState({ drawTime: t1 - t0 })
     }
 
     step() {
@@ -118,11 +110,6 @@ class ShapesExample extends Component {
                 <div className="statistics">
                     <div className="statistics--item">
                         <b>Elements count:</b> <span>{this.state.elements.length}</span>
-                    </div>
-                </div>
-                <div className="statistics">
-                    <div className="statistics--item">
-                        <code>drawTime:</code> <span>{Math.ceil(this.state.drawTime)}</span>
                     </div>
                 </div>
                 <h2>Controls:</h2>

@@ -58,22 +58,22 @@ class Time extends PureComponent  {
 
     delay() {
         const initialTime = performance.now();
-        while(performance.now() - initialTime < 10) {
+        while(performance.now() - initialTime < 8) {
             //delay
         }
     }
 
     render() {
         return (
-            <div>
-                <h3>Time to complete setInterval: {this.state.setIntervalCounterTime} ms</h3>
+            <div className="time-container">
                 <div className="progress-bar">
                     <div className="bar" style={{ width: `${this.state.setIntervalCounter}px` }} />
                 </div>
-                <h3>Time to complete requestAnimationFrame: {this.state.requestAnimationFrameCounterTime} ms</h3>
+                <h3>Time to complete setInterval: {this.state.setIntervalCounterTime} ms</h3>
                 <div className="progress-bar">
                     <div className="bar" style={{ width: `${this.state.requestAnimationFrameCounter}px` }} />
                 </div>
+                <h3>Time to complete requestAnimationFrame: {this.state.requestAnimationFrameCounterTime} ms</h3>
             </div>
         );
     }
