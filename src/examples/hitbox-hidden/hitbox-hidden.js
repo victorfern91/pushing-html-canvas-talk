@@ -11,7 +11,7 @@ const hashTable = new Map();
 
 class HitboxExample extends Component {
     state = {
-        elements: [],
+        elements: new Map(),
         width: 0,
         height: 0,
         detectionTime: 0,
@@ -39,7 +39,7 @@ class HitboxExample extends Component {
         const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
 
 
-        const person = hashTable.get(color);
+        const person = this.state.elements.get(color);
 
         const detectionTime = Math.ceil(performance.now() - t0);
 
@@ -53,7 +53,7 @@ class HitboxExample extends Component {
     };
 
     updateValues() {
-        const elements = [];
+        const elements = new Map();
 
         for (let i = 0; i < 480000; ++i) {
             const column = (i%800);
@@ -70,14 +70,12 @@ class HitboxExample extends Component {
             while(true) {
                 colorKey = getRandomColor();
 
-                if(!hashTable.has(colorKey)) {
+                if(!elements.has(colorKey)) {
                     element.color = colorKey;
-                    hashTable.set(colorKey, element);
+                    elements.set(colorKey, element);
                     break;
                 }
             }
-
-            elements.push(element);
         }
 
         this.setState({ elements }, this.draw);
