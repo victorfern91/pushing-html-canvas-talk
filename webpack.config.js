@@ -62,6 +62,10 @@ module.exports = {
                 to: "./"
             },
             {
+                from: "examples/**/*.png",
+                to: "./"
+            },
+            {
                 from: "src/common/css/style.css",
                 to: "./style.css"
             }

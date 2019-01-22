@@ -14,7 +14,8 @@ class HitboxExample extends Component {
         width: 0,
         height: 0,
         detectionTime: 0,
-        maxDetectionTime: 0
+        maxDetectionTime: 0,
+        personName: "N.A."
     };
 
     componentDidMount() {
@@ -30,7 +31,11 @@ class HitboxExample extends Component {
     onMouseMove = (evt) => {
         const x = evt.clientX - evt.currentTarget.offsetLeft;
         const y = evt.clientY - evt.currentTarget.offsetTop;
-        this.findPersonAtPosition(x,y);
+        const person = this.findPersonAtPosition(x,y);
+
+        if (typeof person === "object") {
+            this.setState({ personName: person.name });
+        }
     };
 
     findPersonAtPosition(x, y) {
@@ -79,7 +84,7 @@ class HitboxExample extends Component {
                 y: line * RADIUS,
                 color: colors[getRandomInt(0, 5)],
                 name: faker.name.findName()
-        });
+            });
         }
 
         this.setState({ elements }, this.draw);
@@ -108,8 +113,10 @@ class HitboxExample extends Component {
                     <div className="statistics--item">
                         <code>[Max] Detecting box time:</code> <span>{this.state.maxDetectionTime}</span>
                     </div>
+                    <div className="statistics--item">
+                        <code>{this.state.personName}</code>
+                    </div>
                 </div>
-                <h2>Controls:</h2>
             </div>
         );
     }
