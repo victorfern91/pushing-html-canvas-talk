@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dashboard -- webpack-dev-server"
+    "start": "webpack-dashboard -- webpack-dev-server",
+    "build": "rm -rf dist && webpack -p && cp -R dist/** docs && rm -rf dist"
   },
   "author": "VIctor Fernandes",
   "license": "ISC",

@@ -41,6 +41,22 @@ class HitboxExample extends Component {
     findPersonAtPosition(x, y) {
         const t0 = window.performance.now();
 
+        // Uncomment this in order to show how it's possible response time by using for-loops
+
+        /*for (let i = 0, length = this.state.elements.length; i < length; ++i) {
+            if (Math.sqrt((x - this.state.elements[i].x) ** 2 + (y - this.state.elements[i].y) ** 2) < RADIUS) {
+                const t1 = window.performance.now();
+                const detectionTime = Math.ceil(t1 - t0);
+
+                this.setState((prevState) => ({
+                    detectionTime,
+                    maxDetectionTime: Math.max(detectionTime, prevState.maxDetectionTime)
+                }));
+
+                return this.state.elements[i];
+            }
+        }*/
+
         this.state.elements.forEach(element => {
             if (Math.sqrt((x - element.x) ** 2 + (y - element.y) ** 2) < RADIUS) {
                 const t1 = window.performance.now();
@@ -54,23 +70,6 @@ class HitboxExample extends Component {
                 return element;
             }
         });
-
-        // Uncomment this in order to show how it's possible response time by using for-loops
-        /*
-        for (let i = 0, length = this.state.elements.length; i < length; ++i) {
-            if (Math.sqrt((x - this.state.elements[i].x) ** 2 + (y - this.state.elements[i].y) ** 2) < RADIUS) {
-                const t1 = window.performance.now();
-                const detectionTime = Math.ceil(t1 - t0);
-
-                this.setState((prevState) => ({
-                    detectionTime,
-                    maxDetectionTime: Math.max(detectionTime, prevState.maxDetectionTime)
-                }));
-
-                return this.state.elements[i];
-            }
-        }
-        */
     }
 
     updateValues() {
