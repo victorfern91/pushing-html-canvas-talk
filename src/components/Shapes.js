@@ -84,6 +84,7 @@ class ShapesExample extends Component {
 
         this.state.elements.forEach(element =>
             this.passepartout.drawCircle(element.x, element.y, RADIUS, element.color)
+            //this.passepartout.drawSquare(element.x, element.y, RADIUS, element.color)
         );
 
         this.canvasContext.closePath();
