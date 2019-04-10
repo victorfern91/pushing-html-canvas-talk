@@ -57,7 +57,7 @@ class HitboxExample extends Component {
             }
         }*/
 
-        this.state.elements.forEach(element => {
+        return this.state.elements.find(element => {
             if (Math.sqrt((x - element.x) ** 2 + (y - element.y) ** 2) < RADIUS) {
                 const t1 = window.performance.now();
                 const detectionTime = Math.ceil(t1 - t0);
@@ -67,8 +67,10 @@ class HitboxExample extends Component {
                     maxDetectionTime: Math.max(detectionTime, prevState.maxDetectionTime)
                 }));
 
-                return element;
+                return true;
             }
+
+            return false;
         });
     }
 
